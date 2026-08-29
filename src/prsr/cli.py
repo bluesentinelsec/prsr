@@ -2,12 +2,14 @@
 
 import argparse
 import logging
+import os
 import sys
 from typing import List, Optional
 
 from prsr._version import __version__
 from prsr.api import render_commit, render_compare, render_diff, render_pr
 from prsr.errors import PrsrError
+from prsr.view import decide_color
 
 logger = logging.getLogger("prsr")
 
@@ -66,6 +68,19 @@ def build_parser() -> argparse.ArgumentParser:
         "--output",
         metavar="FILE",
         help="Write the numbered diff to FILE instead of stdout.",
+    )
+    parser.add_argument(
+        "--color",
+        nargs="?",
+        const="always",
+        default="auto",
+        choices=["auto", "always", "never"],
+        metavar="WHEN",
+        help=(
+            "Color added lines green and deleted lines red. "
+            "WHEN is auto (default: TTY only, not files), always, or never. "
+            "Bare --color means always, including -o files."
+        ),
     )
     parser.add_argument(
         "-v",
@@ -151,22 +166,50 @@ def write_output(path: str, text: str) -> None:
         handle.close()
 
 
-def run_from_args(args: argparse.Namespace) -> str:
+def stdout_is_tty() -> bool:
+    """Return True if stdout is an interactive terminal."""
+    if not hasattr(sys.stdout, "isatty"):
+        return False
+    return sys.stdout.isatty()
+
+
+def no_color_set() -> bool:
+    """Return True if the NO_COLOR environment variable is set and non-empty."""
+    value = os.environ.get("NO_COLOR")
+    if value is None:
+        return False
+    if value == "":
+        return False
+    return True
+
+
+def color_enabled(args: argparse.Namespace) -> bool:
+    """Decide whether this CLI run should emit ANSI color."""
+    writing_to_file = args.output is not None
+    return decide_color(
+        args.color,
+        writing_to_file,
+        stdout_is_tty(),
+        no_color_set(),
+    )
+
+
+def run_from_args(args: argparse.Namespace, color: bool = False) -> str:
     """Dispatch to the matching library API call."""
     if args.pr is not None:
-        return render_pr(args.pr, repo=args.repo)
+        return render_pr(args.pr, repo=args.repo, color=color)
     if args.commit is not None:
-        return render_commit(args.commit, repo=args.repo)
+        return render_commit(args.commit, repo=args.repo, color=color)
     if args.diff is not None:
         raw = read_local_diff(args.diff)
         if args.diff == "-":
             source = "stdin"
         else:
             source = "file:" + args.diff
-        return render_diff(raw, source=source)
+        return render_diff(raw, source=source, color=color)
     if args.base is None or args.head is None:
         raise PrsrError("internal error: compare missing base or head")
-    return render_compare(args.base, args.head, repo=args.repo)
+    return render_compare(args.base, args.head, repo=args.repo, color=color)
 
 
 def main(argv: Optional[List[str]] = None) -> int:
@@ -177,7 +220,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     setup_logging(args.verbose)
 
     try:
-        text = run_from_args(args)
+        text = run_from_args(args, color=color_enabled(args))
     except PrsrError as exc:
         logger.error("%s", exc)
         return 1

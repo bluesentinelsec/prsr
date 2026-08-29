@@ -58,13 +58,31 @@ prsr --repo owner/name --pr 1234
 # number a local unified diff (no GitHub call)
 prsr --diff unified.diff
 git diff main...HEAD | prsr --diff -
+
+# numbered file for Vim / less (no ANSI codes; + and - are in column 0)
+prsr --pr 1234 -o diff.txt
 ```
 
-Also available: `--verbose` / `-v`, `--version`.
+Also available: `--verbose` / `-v`, `--version`, `--color auto|always|never`.
+
+On a **terminal**, `--color auto` uses the same colors as Vim's default
+`ft=diff` syntax: added lines green, deleted lines bright red, file headers
+green, hunk headers brown, `index` magenta, and `#` comments blue.
+
+For a **file you will open in Vim or less**, skip `--color`. Each change line starts
+with `+` or `-`, so Vim's built-in diff syntax colors it with no plugin:
+
+```bash
+prsr --pr 1234 -o review.diff
+vim review.diff          # filetype=diff from the .diff suffix
+# or: :set ft=diff
+```
+
+`less review.diff` will not color, but the leading `+` / `-` still scans like `git diff`.
 
 ## Commenting on the file
 
-Output looks like a normal `git diff`, with two line-number columns in front of each changed line:
+Output looks like a unified diff with old/new line numbers after the `+`/`-` marker:
 
 ```
 # prsr numbered diff | OLD  NEW  CODE | source=pr:1234
@@ -72,12 +90,12 @@ diff --git a/hello.py b/hello.py
 --- a/hello.py
 +++ b/hello.py
 @@ -1,4 +1,5 @@
-   1    1  def greet():
-   2    2      name = "world"
-   3      -    print("hello")
-        3 +    print("hello,")
-        4 +    print(name)
-   4    5      return name
+    1    1 def greet():
+    2    2     name = "world"
+-   3          print("hello")
++        3     print("hello,")
++        4     print(name)
+    4    5     return name
 ```
 
 - **OLD** is GitHub's left (before) line number.
@@ -87,9 +105,9 @@ diff --git a/hello.py b/hello.py
 Write review notes on their own lines. Leave the numbered source lines alone so line numbers stay aligned:
 
 ```
-        3 +    print("hello,")
++        3     print("hello,")
 # nit: drop the comma
-        4 +    print(name)
++        4     print(name)
 ```
 
 Then point your agent at the file.
@@ -106,6 +124,7 @@ text = render_pr("1234", repo="owner/name")
 text = render_commit("abc123")
 text = render_compare("main", "feature-branch")
 text = render_diff(open("unified.diff").read(), source="file:unified.diff")
+text = render_diff(open("unified.diff").read(), color=True)
 ```
 
 Layers:
