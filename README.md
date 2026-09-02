@@ -15,9 +15,9 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-GPL--2.0-blue.svg" alt="License: GPL v2"></a>
 </p>
 
-A workflow I like is to have an agentic coding assistant implement a feature and open a pull request on my behalf. I then review the pull request, leaving in-line comments for changes. The problem with this workflow is it may appear to outsider that you are commenting your own pull requests, even though AI implemented the code.
+A workflow I like is to have an agentic coding assistant implement a feature and open a pull request on my behalf. I then review the pull request on GitHub, leaving in-line comments for changes. The problem with this workflow is it may appear to outsider that you are commenting your own pull requests, even though AI implemented the code.
 
-Enter `prsr`. `prsr` renders the same diff you see on GitHub locally as a text file on your machine. You are free to leave comments without looking like you talk to yourself.
+Enter `prsr`. `prsr` renders the same diff you see on GitHub, but locally as a text file on your machine. You are free to leave comments in private without looking like you talk to yourself. 🤪
 
 **Docs:** [https://bluesentinelsec.github.io/prsr/](https://bluesentinelsec.github.io/prsr/)
 
@@ -71,6 +71,8 @@ OLD is GitHub’s left side, NEW is the right. Additions have only NEW; deletion
 
 ## Library
 
+`prsr` can be invoked as a Python library:
+
 ```python
 from prsr import render_pr, render_commit, render_compare, render_diff
 
@@ -82,6 +84,7 @@ See the [library docs](https://bluesentinelsec.github.io/prsr/library/).
 ## Contributing
 
 ```bash
+# local dev install
 python -m pip install -e ".[dev,docs]"
 python -m pytest
 ```
