@@ -12,4 +12,4 @@ python -m mypy
 mkdocs serve
 ```
 
-Install from git, not PyPI. Pin releases with `@vX.Y.Z`.
+Install from git, not PyPI. Default install is `@latest`. Pin a release with `@vX.Y.Z`.

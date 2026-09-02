@@ -15,27 +15,25 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-GPL--2.0-blue.svg" alt="License: GPL v2"></a>
 </p>
 
-An agent can open a pull request for you. If you review it on GitHub, those comments show up as you talking to yourself. `prsr` renders the same diff on your machine so you can comment in a file and hand that file to the agent instead.
+A workflow I like is to have an agentic coding assistant implement a feature and open a pull request on my behalf. I then review the pull request, leaving in-line comments for changes. The problem with this workflow is it may appear to outsider that you are commenting your own pull requests, even though AI implemented the code.
+
+Enter `prsr`. `prsr` renders the same diff you see on GitHub locally as a text file on your machine. You are free to leave comments without looking like you talk to yourself.
 
 **Docs:** [https://bluesentinelsec.github.io/prsr/](https://bluesentinelsec.github.io/prsr/)
 
 ## Install
 
-Python 3.8+ and [`gh`](https://cli.github.com/) on `PATH` (`gh auth login`). `prsr` does not store tokens; it calls `gh` for GitHub-backed commands. `--diff` does not need `gh`.
+`prsr` requires Python 3.8+ and [`gh`](https://cli.github.com/) on `PATH` (`gh auth login`). `prsr` does not store tokens; it calls `gh` for GitHub-backed commands. `--diff` does not need `gh`.
 
-Install from this repository. PyPI is not used.
-
-```bash
-pip install git+https://github.com/bluesentinelsec/prsr.git
-```
-
-Pin a release tag when one exists:
+Install with pip:
 
 ```bash
-pip install git+https://github.com/bluesentinelsec/prsr.git@v1.0.0
+pip install git+https://github.com/bluesentinelsec/prsr.git@latest
 ```
 
 ## Quick start
+
+Generate a diff from a specified PR:
 
 ```bash
 prsr --pr 1234 -o review.diff
@@ -51,11 +49,10 @@ prsr --repo owner/name --pr 1234
 git diff main...HEAD | prsr --diff -
 ```
 
-`--color auto` colors a terminal. For Vim, skip `--color` and use a `.diff` suffix: hunk lines start with `+` / `-`, so `ft=diff` colors them with no plugin.
 
 ## What you comment on
 
-```
+```diff
 # prsr numbered diff | OLD  NEW  CODE | source=pr:1234
 diff --git a/hello.py b/hello.py
 --- a/hello.py

@@ -1,22 +1,24 @@
 # Install
 
-1.0 is distributed from the GitHub repository. pip installs Python packages from a git URL; PyPI is not used.
+`prsr` is distributed from this GitHub repository. pip installs from a git URL; PyPI is not used.
 
-## Latest `main`
+## Latest release
+
+The `latest` tag always points at the current release:
 
 ```bash
-pip install git+https://github.com/bluesentinelsec/prsr.git
+pip install git+https://github.com/bluesentinelsec/prsr.git@latest
 ```
 
-## Pin a release (recommended)
+## Pin a version
 
-Tags are `vX.Y.Z` and match the package version in `src/prsr/_version.py`.
+Version tags are `vX.Y.Z` and match `src/prsr/_version.py`.
 
 ```bash
 pip install git+https://github.com/bluesentinelsec/prsr.git@v1.0.0
 ```
 
-To see available tags:
+To list tags:
 
 ```bash
 git ls-remote --tags https://github.com/bluesentinelsec/prsr.git

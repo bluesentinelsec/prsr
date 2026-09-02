@@ -50,9 +50,20 @@ Edit the files under `docs/` and `mkdocs.yml`. Keep the root `README.md` as the 
 
 - Version is defined in `src/prsr/_version.py` and read by the package.
 - Changelog follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and [SemVer](https://semver.org/).
-- A release is a git tag `vX.Y.Z` on `main` whose `X.Y.Z` matches `_version.py`. Users pin with:
+- A release is a git tag `vX.Y.Z` on `main` whose `X.Y.Z` matches `_version.py`.
+- Also move the `latest` tag to that commit so this stays the default install:
 
   ```bash
+  git tag -a vX.Y.Z -m "prsr X.Y.Z"
+  git tag -f -a latest -m "Latest release (currently X.Y.Z)" vX.Y.Z
+  git push origin vX.Y.Z
+  git push origin latest --force
+  ```
+
+- Users install with:
+
+  ```bash
+  pip install git+https://github.com/bluesentinelsec/prsr.git@latest
   pip install git+https://github.com/bluesentinelsec/prsr.git@vX.Y.Z
   ```
 
