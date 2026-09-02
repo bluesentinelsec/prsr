@@ -4,10 +4,23 @@ site_url: https://bluesentinelsec.github.io/prsr/
 repo_url: https://github.com/bluesentinelsec/prsr
 repo_name: bluesentinelsec/prsr
 edit_uri: edit/main/docs/
+copyright: Inter and IBM Plex Mono under the SIL Open Font License 1.1.
 
 theme:
-  name: mkdocs
-  locale: en
+  name: material
+  palette:
+    scheme: slate
+    primary: black
+    accent: amber
+  font: false
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - content.code.copy
+    - toc.follow
+
+extra_css:
+  - stylesheets/extra.css
 
 nav:
   - Home: index.md
@@ -22,3 +35,4 @@ markdown_extensions:
       permalink: true
   - tables
   - fenced_code
+  - admonition

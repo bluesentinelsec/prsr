@@ -1,7 +1,7 @@
 # prsr
 
-<p align="center">
-  <img src="assets/prsr.jpg" alt="prsr — pull request self-review" width="560">
+<p class="hero-wrap">
+  <img class="hero" src="assets/prsr.jpg" alt="prsr — pull request self-review">
 </p>
 
 **prsr** (pronounced “pur-sir”) is short for **pull request self-review**.

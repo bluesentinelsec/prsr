@@ -1,0 +1,10 @@
+# Fonts
+
+Self-hosted, SIL Open Font License 1.1 (free/libre):
+
+| Family | Files | License |
+|--------|--------|---------|
+| [Inter](https://rsms.me/inter/) | `InterVariable.woff2`, `InterVariable-Italic.woff2` | [OFL-Inter.txt](OFL-Inter.txt) |
+| [IBM Plex Mono](https://github.com/IBM/plex) | `IBMPlexMono-Regular.woff2`, `IBMPlexMono-Medium.woff2` | [OFL-IBMPlex.txt](OFL-IBMPlex.txt) |
+
+Inter stands in for San Francisco on the web. IBM Plex Mono is the code face. Neither is loaded from Google Fonts.
