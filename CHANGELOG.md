@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   release with `@v1.0.0`.
 - User documentation published to GitHub Pages.
 - Contributing guide (`CONTRIBUTING.md`).
+- Project hero image on the README and documentation home page.
 - Color for numbered diffs on a TTY (`--color auto`): same palette as Vim's
   default `ft=diff` syntax (Added green, Removed bright red, file headers
   green, hunk headers brown, index magenta, comments blue). File output is

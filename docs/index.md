@@ -1,8 +1,12 @@
 # prsr
 
-**prsr** (pronounced "pur-sir") is short for **pull request self-review**.
+<p align="center">
+  <img src="assets/prsr.jpg" alt="prsr — pull request self-review" width="560">
+</p>
 
-It prints a GitHub-style unified diff **with old and new line numbers preserved**, as plain text, on your machine. You comment in that file. An agent can read the comments and still know exactly which lines you mean — without you posting review comments on a pull request that GitHub thinks you wrote.
+**prsr** (pronounced “pur-sir”) is short for **pull request self-review**.
+
+GitHub-style unified diffs with old and new line numbers, as plain text, on your machine. You comment in that file. An agent can read the comments and still know exactly which lines you mean — without you posting review comments on a pull request that GitHub thinks you wrote.
 
 ## Why
 
