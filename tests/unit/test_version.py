@@ -13,4 +13,4 @@ def test_version_is_semver():
 
 def test_public_version_matches_file():
     assert __version__ == file_version
-    assert __version__ == "0.1.0"
+    assert __version__ == "1.0.0"

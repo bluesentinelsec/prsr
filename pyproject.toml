@@ -12,7 +12,7 @@ license = { file = "LICENSE" }
 authors = [{ name = "bluesentinelsec" }]
 keywords = ["github", "diff", "pull-request", "review", "cli"]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 5 - Production/Stable",
     "Environment :: Console",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
@@ -36,7 +36,9 @@ dev = [
     "ruff>=0.5.0",
     "mypy>=1.8.0",
     "build>=1.0.0",
-    "twine>=4.0.0",
+]
+docs = [
+    "mkdocs>=1.6",
 ]
 
 [project.scripts]
@@ -44,6 +46,7 @@ prsr = "prsr.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/bluesentinelsec/prsr"
+Documentation = "https://bluesentinelsec.github.io/prsr/"
 Repository = "https://github.com/bluesentinelsec/prsr"
 Issues = "https://github.com/bluesentinelsec/prsr/issues"
 Changelog = "https://github.com/bluesentinelsec/prsr/blob/main/CHANGELOG.md"
