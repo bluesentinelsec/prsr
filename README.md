@@ -5,9 +5,10 @@
 It prints a GitHub-style unified diff **with old and new line numbers preserved**, as plain text, on your machine. You comment in that file. An agent can read the comments and still know exactly which lines you mean — without you posting review comments on a pull request that GitHub thinks you wrote.
 
 [![CI](https://github.com/bluesentinelsec/prsr/actions/workflows/ci.yml/badge.svg)](https://github.com/bluesentinelsec/prsr/actions/workflows/ci.yml)
-[![PyPI](https://img.shields.io/pypi/v/prsr.svg)](https://pypi.org/project/prsr/)
-[![Python versions](https://img.shields.io/pypi/pyversions/prsr.svg)](https://pypi.org/project/prsr/)
-[![License](https://img.shields.io/pypi/l/prsr.svg)](https://github.com/bluesentinelsec/prsr/blob/main/LICENSE)
+[![Docs](https://img.shields.io/badge/docs-GitHub%20Pages-0A7A0A)](https://bluesentinelsec.github.io/prsr/)
+[![License: GPL v2](https://img.shields.io/badge/license-GPL--2.0-blue.svg)](LICENSE)
+
+**Docs:** [https://bluesentinelsec.github.io/prsr/](https://bluesentinelsec.github.io/prsr/)
 
 ## Why
 
@@ -22,18 +23,30 @@ That works, except GitHub shows those comments as you talking to yourself. `prsr
 | **Python** | 3.8 or newer |
 | **GitHub CLI** | [`gh`](https://cli.github.com/) on `PATH`, already authenticated (`gh auth login`) |
 
-`prsr` does not store tokens. It runs `gh` as a subprocess and lets `gh` handle GitHub authentication.
+`prsr` does not store tokens. It runs `gh` as a subprocess and lets `gh` handle GitHub authentication. Local `--diff` mode does not need `gh`.
 
 ## Install
 
-```bash
-pip install prsr
-```
+1.0 is installed from this GitHub repository with pip. PyPI is not used.
 
-From this repository:
+Latest `main`:
 
 ```bash
 pip install git+https://github.com/bluesentinelsec/prsr.git
+```
+
+Pin a release tag (recommended):
+
+```bash
+pip install git+https://github.com/bluesentinelsec/prsr.git@v1.0.0
+```
+
+From a local clone:
+
+```bash
+git clone https://github.com/bluesentinelsec/prsr.git
+cd prsr
+pip install .
 ```
 
 ## Usage
@@ -43,8 +56,7 @@ pip install git+https://github.com/bluesentinelsec/prsr.git
 prsr --pr 1234
 
 # write to a file
-prsr --pr 1234 -o diff.txt
-prsr --pr 1234 > diff.txt
+prsr --pr 1234 -o review.diff
 
 # a single commit
 prsr --commit abc123
@@ -58,27 +70,21 @@ prsr --repo owner/name --pr 1234
 # number a local unified diff (no GitHub call)
 prsr --diff unified.diff
 git diff main...HEAD | prsr --diff -
-
-# numbered file for Vim / less (no ANSI codes; + and - are in column 0)
-prsr --pr 1234 -o diff.txt
 ```
 
 Also available: `--verbose` / `-v`, `--version`, `--color auto|always|never`.
 
 On a **terminal**, `--color auto` uses the same colors as Vim's default
-`ft=diff` syntax: added lines green, deleted lines bright red, file headers
-green, hunk headers brown, `index` magenta, and `#` comments blue.
-
-For a **file you will open in Vim or less**, skip `--color`. Each change line starts
-with `+` or `-`, so Vim's built-in diff syntax colors it with no plugin:
+`ft=diff` syntax. For a **file you will open in Vim**, skip `--color`. Each
+change line starts with `+` or `-`, so Vim's built-in diff syntax colors it
+with no plugin:
 
 ```bash
 prsr --pr 1234 -o review.diff
-vim review.diff          # filetype=diff from the .diff suffix
-# or: :set ft=diff
+vim review.diff
 ```
 
-`less review.diff` will not color, but the leading `+` / `-` still scans like `git diff`.
+Full CLI, library API, and review workflow: [the documentation](https://bluesentinelsec.github.io/prsr/).
 
 ## Commenting on the file
 
@@ -114,39 +120,29 @@ Then point your agent at the file.
 
 ## Library API
 
-Everything the CLI does is available as a library. The CLI is a thin argparse wrapper.
-
 ```python
 from prsr import render_pr, render_commit, render_compare, render_diff
 
 text = render_pr("1234")
-text = render_pr("1234", repo="owner/name")
 text = render_commit("abc123")
 text = render_compare("main", "feature-branch")
 text = render_diff(open("unified.diff").read(), source="file:unified.diff")
-text = render_diff(open("unified.diff").read(), color=True)
 ```
 
-Layers:
-
-| Layer | Module | Role |
-|-------|--------|------|
-| Data model | `prsr.model` | `Diff`, `DiffFile`, `Hunk`, `DiffLine` |
-| Logic | `prsr.logic` | Parse unified diffs, assign GitHub line numbers |
-| View | `prsr.view` | Render numbered text |
-| GitHub | `prsr.gh` | `gh` subprocess calls |
-| API | `prsr.api` | `render_pr`, `render_commit`, `render_compare`, `render_diff` |
-| CLI | `prsr.cli` | argparse entrypoint |
+See [Library](https://bluesentinelsec.github.io/prsr/library/) for the full API.
 
 ## Development
 
 ```bash
-python -m pip install -e ".[dev]"
+python -m pip install -e ".[dev,docs]"
 python -m pytest
 python -m ruff check src tests
 python -m ruff format src tests
 python -m mypy
+mkdocs serve
 ```
+
+See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 

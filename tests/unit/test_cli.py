@@ -5,6 +5,7 @@ import logging
 
 import pytest
 
+from prsr import __version__
 from prsr.cli import build_parser, main
 from prsr.errors import GhError
 from tests.unit.sample_diffs import HELLO_DIFF
@@ -44,7 +45,7 @@ def test_version_flag(capsys):
     assert exc.value.code == 0
     captured = capsys.readouterr()
     assert "prsr" in captured.out
-    assert "0.1.0" in captured.out
+    assert __version__ in captured.out
 
 
 def test_help_lists_core_flags():
